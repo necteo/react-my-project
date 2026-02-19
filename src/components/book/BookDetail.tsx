@@ -6,7 +6,7 @@ import { BookDetailProps } from "../../commons/commonsData";
 import { AxiosResponse } from "axios";
 
 const BookDetail = () => {
-  const { contentid } = useParams();
+  const { isbn } = useParams();
   const nav = useNavigate();
 
   const [isInserting, setIsInserting] = useState(true);
@@ -20,9 +20,9 @@ const BookDetail = () => {
   const umsgRef = useRef<HTMLTextAreaElement>(null);
 
   const { isLoading, isError, error, data, refetch: jejuDetail } = useQuery<{ data: BookDetailProps }>({
-    queryKey: ['detail-jeju', contentid],
+    queryKey: ['book-detail', isbn],
     queryFn: async () => {
-      return await apiClient.get(`/jeju/detail-react/${contentid}`)
+      return await apiClient.get(`/book/detail-react/${isbn}`)
     }
   });
 
@@ -30,7 +30,7 @@ const BookDetail = () => {
   const { mutate: commentInsert } = useMutation<BookDetailProps>({
     mutationFn: async () => {
       const res: AxiosResponse<BookDetailProps, Error> = await apiClient.post(`/comment/insert`, {
-        cno: contentid,
+        isbn: isbn,
         id: sessionStorage.getItem('id'),
         name: sessionStorage.getItem('name'),
         msg: msg
@@ -51,7 +51,7 @@ const BookDetail = () => {
 
   const { mutate: commentDelete } = useMutation<BookDetailProps>({
     mutationFn: async () => {
-      const res: AxiosResponse<BookDetailProps, Error> = await apiClient.delete(`/comment/delete/${no}/${contentid}`);
+      const res: AxiosResponse<BookDetailProps, Error> = await apiClient.delete(`/comment/delete/${no}/${isbn}`);
       return res.data;
     },
     onSuccess: (data: BookDetailProps) => {
@@ -89,7 +89,7 @@ const BookDetail = () => {
     return <h1 className="text-center">Error 발생: {error?.message}</h1>;
   }
 
-  const jejuData =  data?.data.dto;
+  const bookDetail =  data?.data.detail;
   const comment = data?.data.comments;
   console.log(comment);
   // 이벤트 처리
@@ -159,38 +159,44 @@ const BookDetail = () => {
             <table className="table">
               <tbody>
               <tr>
-                <td className="text-center" rowSpan={6} width="30%">
-                  <img src={jejuData?.image1} alt="" style={{ width: "350px", height: "300px" }} />
+                <td className="text-center" rowSpan={9} width="30%">
+                  <img src={bookDetail?.poster} alt="" style={{ width: "350px", height: "300px" }} />
                 </td>
-                <td colSpan={2}><h3>{jejuData?.title}</h3></td>
+                <td colSpan={2}><h3>{bookDetail?.title}</h3></td>
               </tr>
               <tr>
-                <td className="text-center" width="15%">주소</td>
-                <td width="55%">{jejuData?.address}</td>
+                <td className="text-center" width="15%">지은이</td>
+                <td width="55%">{bookDetail?.author}</td>
+              </tr>
+              {bookDetail?.translator &&
+                <tr>
+                  <td className="text-center" width="15%">옮긴이</td>
+                  <td width="55%">{bookDetail.translator}</td>
+                </tr>}
+              <tr>
+                <td className="text-center" width="15%">페이지</td>
+                <td width="55%">{bookDetail?.page}</td>
               </tr>
               <tr>
-                <td className="text-center" width="15%">휴일</td>
-                <td width="55%" dangerouslySetInnerHTML={{ __html: jejuData?.restdate ?? '' }}></td>
+                <td className="text-center" width="15%">가격</td>
+                <td width="55%">{bookDetail?.price}</td>
               </tr>
               <tr>
-                <td className="text-center" width="15%">사용시간</td>
-                <td width="55%" dangerouslySetInnerHTML={{ __html: jejuData?.usetime ?? '' }}></td>
+                <td className="text-center" width="15%">ISBN</td>
+                <td width="55%">{bookDetail?.isbn}</td>
               </tr>
               <tr>
-                <td className="text-center" width="15%">주차</td>
-                <td width="55%">{jejuData?.parking}</td>
-              </tr>
-              <tr>
-                <td className="text-center" width="15%">안내</td>
+                <td className="text-center" width="15%">발행일</td>
                 {/*HTML로 파싱 dangerouslySetInnerHTML*/}
-                <td width="55%" dangerouslySetInnerHTML={{ __html: jejuData?.infocenter ?? '' }}></td>
+                <td width="55%">{bookDetail?.pubdate}</td>
               </tr>
-              </tbody>
-            </table>
-            <table className="table">
-              <tbody>
               <tr>
-                <td>{jejuData?.msg}</td>
+                <td className="text-center" width="15%">시리즈</td>
+                <td width="55%">{bookDetail?.series}</td>
+              </tr>
+              <tr>
+                <td className="text-center" width="15%">유형</td>
+                <td width="55%">{bookDetail?.type}</td>
               </tr>
               </tbody>
             </table>

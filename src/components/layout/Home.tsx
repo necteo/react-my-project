@@ -1,6 +1,7 @@
 import {useQuery} from "@tanstack/react-query";
 import apiClient from "../../http-commons";
 import {MainPageData} from "../../commons/commonsData";
+import {Link} from "react-router-dom";
 
 const Home = () => {
   const { isLoading, isError, error, data } = useQuery<{ data: MainPageData }>({
@@ -28,13 +29,13 @@ const Home = () => {
         {mainPage?.hitList.map((hitBook) => (
           <div className="col-md-6" key={hitBook.isbn}>
             <div className="thumbnail">
-              <a href="/w3images/lights.jpg">
+              <Link to={`/book/detail/${hitBook.isbn}`}>
                 <img src={hitBook.poster} alt="noimg" />
                 <div className="caption">
                   <p>{hitBook.title}</p>
                   <p>{hitBook.author}</p>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>)
         )}

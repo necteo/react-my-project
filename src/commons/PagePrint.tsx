@@ -1,8 +1,8 @@
-import { JejuData } from './commonsData';
+import { BookListData } from './commonsData';
 import { Dispatch, SetStateAction } from 'react';
 
 const PagePrint = ({ pageData, setCurpage }: {
-  pageData: JejuData,
+  pageData: BookListData,
   setCurpage: Dispatch<SetStateAction<number>>
 }) => {
   const { curpage, totalpage, startPage, endPage } = pageData;
@@ -26,13 +26,13 @@ const PagePrint = ({ pageData, setCurpage }: {
       <ul className="pagination">
         {startPage > 1 ?
           (<li className="page-item" key={startPage - 1}>
-          <span className="page-link nav-link" onClick={prev}>&laquo;</span>
+          <span className="page-link" onClick={prev}>&laquo;</span>
           </li>) : null
         }
         {pageArr}
         {endPage < totalpage ?
           (<li className="page-item" key={endPage + 1}>
-            <span className="page-link nav-link" onClick={next}>&raquo;</span>
+            <span className="page-link" onClick={next}>&raquo;</span>
           </li>) : null
         }
       </ul>

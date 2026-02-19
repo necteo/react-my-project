@@ -31,13 +31,13 @@ export interface BookDetail {
   series: string;
   type: string;
   link: string;
-  hit: string;
+  hit: number;
   poster: string;
 }
 
 export interface CommentData {
   no: number;
-  cno: number;
+  isbn: number;
   id: string;
   name: string;
   msg: string;
@@ -45,6 +45,25 @@ export interface CommentData {
 }
 
 export interface BookDetailProps {
-  dto: BookDetail;
+  detail: BookDetail;
   comments: CommentData[];
+}
+
+export interface YoutubeItem {
+  id: {
+    videoId: string;
+  };
+  snippet: {
+    title: string;
+    description: string;
+    thumbnail: {
+      medium: {
+        url: string;
+      };
+    };
+  };
+}
+
+export interface YoutubeResponse {
+  items: YoutubeItem[];
 }

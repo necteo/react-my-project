@@ -115,22 +115,45 @@ const Header = () => {
           )}
         </div>
       </div>
-      <div className='row'>
-        <div className='col-12'>
-          <h1 className='text-center'>Title</h1>
-        </div>
-      </div>
       <div className='col-12'>
         <nav className='navbar'>
           <ul className='navbar-nav'>
-            <li className='nav-item'>Home</li>
-            <li className='nav-item'>게시판</li>
             <li className='nav-item'>
-              검색
-              <div className='dropdown-menu'>
-                <Link to='/find/youtube'>유투브 검색</Link>
-                <Link to='/find/news'>뉴스 검색</Link>
+              <Link to='/'>Home</Link>
+            </li>
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="yummyDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >책</a>
+              <div className="dropdown-menu" aria-labelledby="yummyDropdown">
+                <Link className="dropdown-item" to="/book/list">전체보기</Link>
               </div>
+            </li>
+            <li className='nav-item'>
+              <Link to='board/list'>게시판</Link>
+            </li>
+            <li className='nav-item dropdown'>
+              <a className="nav-link dropdown-toggle" href="#" role="button">검색</a>
+              <div className='dropdown-menu'>
+                <Link className="dropdown-item" to='/find/youtube'>유튜브 검색</Link>
+                <Link className="dropdown-item" to='/find/news'>뉴스 검색</Link>
+              </div>
+            </li>
+            {login &&
+              <li className="nav-item">
+                <Link className="nav-link" to="/chat/chatbot">챗봇</Link>
+              </li>
+            }
+            <li className="nav-item">
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/board/list">커뮤니티</Link>
             </li>
           </ul>
         </nav>
