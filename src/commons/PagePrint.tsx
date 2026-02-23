@@ -1,9 +1,12 @@
 import { BookListData } from './commonsData';
 import { Dispatch, SetStateAction } from 'react';
 
-const PagePrint = ({ pageData, setCurpage }: {
-  pageData: BookListData,
-  setCurpage: Dispatch<SetStateAction<number>>
+const PagePrint = ({
+  pageData,
+  setCurpage,
+}: {
+  pageData: BookListData;
+  setCurpage: Dispatch<SetStateAction<number>>;
 }) => {
   const { curpage, totalpage, startPage, endPage } = pageData;
   const pageArr = [];
@@ -15,29 +18,33 @@ const PagePrint = ({ pageData, setCurpage }: {
 
   for (let i = startPage; i <= endPage; i++) {
     pageArr.push(
-      <li className={i === curpage ? "page-item active" : "page-item"} key={i}>
-        <span className="page-link nav-link" onClick={() => pageChange(i)}>{i}</span>
-      </li>
-    )
+      <li className={i === curpage ? 'page-item active' : 'page-item'} key={i}>
+        <span className="page-link nav-link" onClick={() => pageChange(i)}>
+          {i}
+        </span>
+      </li>,
+    );
   }
 
   return (
-    <nav aria-label="#">
-      <ul className="pagination">
-        {startPage > 1 ?
-          (<li className="page-item" key={startPage - 1}>
-          <span className="page-link" onClick={prev}>&laquo;</span>
-          </li>) : null
-        }
-        {pageArr}
-        {endPage < totalpage ?
-          (<li className="page-item" key={endPage + 1}>
-            <span className="page-link" onClick={next}>&raquo;</span>
-          </li>) : null
-        }
-      </ul>
-    </nav>
-  )
+    <ul className="pagination">
+      {startPage > 1 ? (
+        <li className="page-item" key={startPage - 1}>
+          <span className="page-link" onClick={prev}>
+            &laquo;
+          </span>
+        </li>
+      ) : null}
+      {pageArr}
+      {endPage < totalpage ? (
+        <li className="page-item" key={endPage + 1}>
+          <span className="page-link" onClick={next}>
+            &raquo;
+          </span>
+        </li>
+      ) : null}
+    </ul>
+  );
 };
 
 export default PagePrint;
