@@ -1,10 +1,39 @@
-import axios from "axios";
+import axios from 'axios';
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:8080',
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true, // 쿠키 자동 포함
 });
+
+// 응답 인터셉터 — Access Token 만료 시 자동 재발급
+apiClient.interceptors.response.use(
+  (response) => response, // 성공은 그냥 통과
+
+  async (error) => {
+    const originalRequest = error.config;
+
+    // 401이고 재시도한 적 없으면
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true; // 무한루프 방지
+
+      try {
+        // 쿠키가 자동으로 포함되므로 body 필요 없음
+        await apiClient.post('/api/auth/refresh');
+
+        // 원래 요청 재시도
+        return apiClient(originalRequest);
+      } catch (refreshError) {
+        // Refresh Token도 만료 — 로그인 페이지로 이동
+        window.location.href = '/login';
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  },
+);
 
 export default apiClient;
