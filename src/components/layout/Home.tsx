@@ -1,13 +1,12 @@
-import {useQuery} from "@tanstack/react-query";
-import apiClient from "../../http-commons";
-import {MainPageData} from "../../commons/commonsData";
-import {Link} from "react-router-dom";
+import { useQuery } from '@tanstack/react-query';
+import apiClient from '../../http-commons';
+import { MainPageData } from '../../commons/commonsData';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const { isLoading, isError, error, data } = useQuery<{ data: MainPageData }>({
     queryKey: ['main-data'],
-    queryFn: async () =>
-      await apiClient.get('/')
+    queryFn: async () => await apiClient.get('/'),
   });
 
   if (isLoading) {
@@ -37,8 +36,8 @@ const Home = () => {
                 </div>
               </Link>
             </div>
-          </div>)
-        )}
+          </div>
+        ))}
         <h3 className="text-center">새로운 책 Top6</h3>
         {mainPage?.newList.map((newBook) => (
           <div className="col-md-6" key={newBook.isbn}>
@@ -51,11 +50,11 @@ const Home = () => {
                 </div>
               </a>
             </div>
-          </div>)
-        )}
+          </div>
+        ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Home;

@@ -56,26 +56,6 @@ const Header = () => {
     }
   }, []);
 
-  const memberLogin = () => {
-    if (!id.trim()) {
-      idRef.current?.focus();
-      return;
-    }
-    if (!pwd.trim()) {
-      pwdRef.current?.focus();
-      return;
-    }
-    loginOk();
-  };
-
-  const memberLogout = () => {
-    sessionStorage.clear();
-    setId('');
-    setPwd('');
-    setLogin(false);
-    window.location.reload();
-  };
-
   return (
     <div className="container">
       <div className="row">

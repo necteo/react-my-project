@@ -17,6 +17,10 @@ apiClient.interceptors.response.use(
 
     // 401이고 재시도한 적 없으면
     if (error.response?.status === 401 && !originalRequest._retry) {
+      // /api/member/me는 재시도 제외 — 비로그인 상태 확인용이므로
+      if (originalRequest.url === '/api/member/me') {
+        return Promise.reject(error);
+      }
       originalRequest._retry = true; // 무한루프 방지
 
       try {
